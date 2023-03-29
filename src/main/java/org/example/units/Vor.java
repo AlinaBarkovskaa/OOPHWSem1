@@ -7,6 +7,9 @@ public class Vor extends BaseHero{
         super(100, name, 3, 4, 10, 100, new int[]{4, 12}, "Vor");
         stealthMode = true;
         hiddenStrike = 40;
-
+    }
+    @Override
+    public String GetInfo() {
+        return "Вор";
     }
 }

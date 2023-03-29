@@ -10,4 +10,8 @@ public class Arbaletchik extends BaseHero{
         arrows = 10;
         accuracy = 50;
     }
+    @Override
+    public String GetInfo() {
+        return "Арбалетчик";
+    }
 }

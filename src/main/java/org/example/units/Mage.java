@@ -13,6 +13,9 @@ public class Mage extends BaseHero{
         spells.add(new Spells("Лечение"));
         spells.add(new Spells("Увеличение брони"));
         spells.add(new Spells("Увеличение урона"));
-
+    }
+    @Override
+    public String GetInfo() {
+        return "Маг";
     }
 }

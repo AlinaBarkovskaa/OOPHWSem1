@@ -1,6 +1,6 @@
 package org.example.units;
 
-public abstract class BaseHero {
+public abstract class BaseHero implements GameInterface {
     protected String className;
     float hp, maxHp;
     String name;
@@ -9,10 +9,13 @@ public abstract class BaseHero {
     int def;
     int armor;
     int[] damage;
-    @Override public String toString(){
-        return name + " " + hp + " " + ataka + " " + className + " " ;
+
+    @Override
+    public String toString() {
+        return name + " " + hp + " " + ataka + " " + className + " ";
     }
-    public BaseHero(float hp, String name, int x, int y, int ataka, int def, int[] damage, String className){
+
+    public BaseHero(float hp, String name, int x, int y, int ataka, int def, int[] damage, String className) {
         this.hp = this.maxHp = hp;
         this.name = name;
         this.x = x;
@@ -22,4 +25,10 @@ public abstract class BaseHero {
         this.damage = damage;
         this.className = className;
     }
+
+    @Override
+    public void Step() {
+
+    }
 }
+

@@ -11,4 +11,9 @@ public class Sniper extends BaseHero {
         arrows = 10;
         accuracy = 70;
     }
+    @Override
+    public String GetInfo() {
+        return "Снайпер";
+
+    }
 }

@@ -16,4 +16,8 @@ public class Monk extends BaseHero {
         spells.add(new Spells("Увеличение брони"));
         spells.add(new Spells("Увеличение урона"));
     }
+    @Override
+    public String GetInfo() {
+        return "Монах";
+    }
 }
