@@ -1,37 +1,20 @@
-package org.example;
-
-import org.example.units.*;
-
+import org.example.*;
+import org.example.units.BaseHero;
 import java.util.ArrayList;
-import java.util.Random;
 
-public class Main {
+public class Main  {
     public static void main(String[] args) {
-        ArrayList<BaseHero> heroes = new ArrayList<>();
-        Random random = new Random();
-        for(int i = 0; i <= 10; i++){
-            switch (random.nextInt(7)){
-                case 0: heroes.add(new Sniper(getName()));
-                break;
-                case 1: heroes.add(new Arbaletchik(getName()));
-                    break;
-                case 2: heroes.add(new Mage(getName()));
-                    break;
-                case 3: heroes.add(new Monk(getName()));
-                    break;
-                case 4: heroes.add(new Spearman(getName()));
-                    break;
-                case 5: heroes.add(new Vor(getName()));
-                    break;
-                default: heroes.add(new Peasant(getName()));
-                    break;
-            }
-        }
-        heroes.forEach(n->System.out.println(getName()+ " " + n.GetInfo()));
-
-    }
-    public static String getName() {
-        return Names.values()[new Random().nextInt(Names.values().length)].toString();
+        ArrayList<BaseHero> teamOwn = new ArrayList<>();
+        ArrayList<BaseHero> teamEnemy = new ArrayList<>();
+        System.out.println("   Список своих");
+        Additionally.getListOwn(teamOwn);//вызов статического метода, обращаемся к классу!
+        teamOwn.forEach(n -> System.out.println(n.getInfo() + " " + n.getName()));
+        System.out.println("Список противников");
+        Additionally.getListEnemy(teamEnemy);
+        teamEnemy.forEach(n -> System.out.println(n.getInfo() + " " + n.getName()));
+        System.out.println("Начало игры");
+        teamOwn.forEach(n -> n.step(teamEnemy));
+        teamEnemy.forEach(n -> n.step(teamOwn));
 
     }
 }
