@@ -1,17 +1,27 @@
 package org.example.units;
 import org.example.GameInterface;
 import org.example.Position;
-
 import java.util.ArrayList;
 
 public abstract class BaseHero implements GameInterface {
-    protected Float hp, maxhp; // здоровье
+    protected Float hp, maxhp;
     protected String name;
     protected Position position;
     protected int attack;
-    protected int[] damage; // урон
-    protected int def; // защита
-
+    protected int[] damage;
+    protected int def;
+    protected int priority;
+    protected enum State {stand, busy, dead}
+    protected State state;
+    public State getState() {
+        return state;
+    }
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+    public int getPriority() {
+        return priority;
+    }
     public Float getHp() {
         return hp;
     }
@@ -42,46 +52,29 @@ public abstract class BaseHero implements GameInterface {
     public void setDef(int def) {
         this.def = def;
     }
-    public int[] getDamage() {
-        return damage;
-    }
-    public void setDamage(int[] damage) {
-        this.damage = damage;
-    }
+//    //public int[] getDamage() {
+//        return damage;
+//    }
+//    public void setDamage(int[] damage) {
+//        this.damage = damage;
+//    }
 
-    /**
-     * конструктор
-     * @param hp
-//     * @param maxhp
-     * @param name
-     * @param position
-     * @param attack
-     * @param damage
-     * @param def
-     */
-    public BaseHero(float hp, String name, Position position, int attack, int[] damage, int def) {
+    public BaseHero(float hp, String name, Position position, int attack, int[] damage, int def, int priority) {
         this.hp = this.maxhp = hp;
         this.name = name;
         this.position = new Position(position.x, position.y);
         this.attack = attack;
         this.damage = damage;
         this.def = def;
+        this.priority = priority;
+        this.state = State.stand;
     }
-
     @Override
-    public  void step(ArrayList<BaseHero> enemyTeam) {
-
-    }
-
+    public  abstract void step(ArrayList<BaseHero> arrayFriend, ArrayList<BaseHero> arrayEnemy);
     @Override
     public String getInfo() {
-        return this.getClass().getSimpleName();
+        return this.getClass().getSimpleName() + " (здоровье " + hp + ")"  ;
     }
-    /**
-     * находит и возвращает ближайшего врага, принимает список
-     * @param enemyTeam
-     * @return
-     */
     public BaseHero findNearEnemy(ArrayList<BaseHero> enemyTeam) {
         BaseHero nearEnemy = enemyTeam.get(0);
         double distance = position.distance(enemyTeam.get(0).position);
@@ -96,10 +89,11 @@ public abstract class BaseHero implements GameInterface {
         }
         return nearEnemy;
     }
-
-    /**
-     * абстрактный метод
-     */
+    protected void getDamage (float damage) {
+        hp -= damage;
+        if (hp <= 0) {
+            state = State.dead;
+        }
+    }
     public abstract void Die();
-
 }

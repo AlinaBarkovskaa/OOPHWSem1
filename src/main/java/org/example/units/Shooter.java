@@ -1,12 +1,11 @@
 package org.example.units;
 import org.example.GameInterface;
 import org.example.Position;
-import org.example.units.BaseHero;
-
 import java.util.ArrayList;
+import java.util.Random;
 public abstract class Shooter extends BaseHero implements GameInterface {
-    protected int accuracy; // точность
-    protected int arrows = 10; // стрелы
+    protected int accuracy;
+    protected int arrows = 10;
     protected int maxArrows;
 
     public int getMaxArrows() {
@@ -27,35 +26,38 @@ public abstract class Shooter extends BaseHero implements GameInterface {
     public void setAccuracy(int accuracy) {
         this.accuracy = accuracy;
     }
-
-    public Shooter(float hp, String name, Position position, int attack, int[] damage, int def, int accuracy, int arrows) {
-        super(hp, name, position, attack, damage, def);
+    public Shooter(float hp, String name, Position position, int attack,
+                   int[] damage, int def, int accuracy, int arrows, int prioritet) {
+        super(hp, name, position, attack, damage, def, prioritet);
         this.arrows = arrows;
         maxArrows = arrows;
         this.accuracy = accuracy;
     }
-
-    public void step(ArrayList<BaseHero> enemyTeam) {
+    public void step(ArrayList<BaseHero> arrayFriend, ArrayList<BaseHero> arrayEnemy) {
         System.out.println("Ходит " + getInfo() + " " + getName());
-        if (hp <= 0 || arrows <= 0) return;
-        System.out.println("Ищу ближайшего противника!");
-        BaseHero closestEnemy = findNearEnemy(enemyTeam);
-        System.out.println("Найден ближайший противник: " + closestEnemy.getInfo() + " " + getName());
-        System.out.println("Стреляю!");
-        shoot();
-        System.out.println("Проверяю есть ли в моей команде Peasant..если он есть то завершаю ход, если нет то уменьшаю количество стрел");
-        checkPeasant();
-        //если крестьянин найден return;
-        System.out.println("Конец данного хода.");
-    }
-    private void shoot() { //что еще надо прописать в выстреле? уменьшить здоровье?
-        arrows--;
-    }
-    private void checkPeasant() {
-        if (1 > 0) {// если крестьянин есть
-            return;
-        } else {
+        if (state == State.dead) return;
+        for (BaseHero friend : arrayFriend) {
+            if (friend.getClass().getSimpleName().equals("Peasant")
+                    && friend.getState().equals(State.stand)) {
+                friend.state = State.busy;
+                arrows++;
+                System.out.println("Нашел крестьянина, стрел стало " + arrows);
+                break;
+            }
+        }
+        if (arrows > 0) {
+            BaseHero closestEnemy = findNearEnemy(arrayEnemy);
+            System.out.println("Найден ближайший противник: " + closestEnemy.getInfo() + " " + closestEnemy.getName());
+            //checkPeasant(arrayFriend);
+            Random r = new Random();
+            closestEnemy.getDamage(r.nextInt(damage[0], damage[1]+1));
+            System.out.println(this.getInfo() + this.getName() + " стреляет в " + closestEnemy.getInfo() + " " + closestEnemy.getName());
             arrows--;
         }
+        System.out.println("Осталось " + arrows + " стрел");
+    }
+    @Override
+    public String getInfo() {
+        return this.getClass().getSimpleName() + " (здоровье " + hp + ")" + "( стрел " + arrows + ")";
     }
 }
