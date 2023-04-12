@@ -8,4 +8,7 @@ public class Position {
     public double distance(Position defender) {
         return Math.sqrt((defender.x - x)*(defender.x - x) + (defender.y - y)*(defender.y - y));
     }
+
+
+
 }

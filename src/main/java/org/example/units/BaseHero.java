@@ -2,7 +2,6 @@ package org.example.units;
 import org.example.GameInterface;
 import org.example.Position;
 import java.util.ArrayList;
-
 public abstract class BaseHero implements GameInterface {
     protected Float hp, maxhp;
     protected String name;
@@ -52,13 +51,16 @@ public abstract class BaseHero implements GameInterface {
     public void setDef(int def) {
         this.def = def;
     }
-//    //public int[] getDamage() {
-//        return damage;
-//    }
-//    public void setDamage(int[] damage) {
-//        this.damage = damage;
-//    }
-
+    /**
+     * конструктор
+     * @param hp
+     * @param maxhp
+     * @param name
+     * @param position
+     * @param attack
+     * @param damage
+     * @param def
+     */
     public BaseHero(float hp, String name, Position position, int attack, int[] damage, int def, int priority) {
         this.hp = this.maxhp = hp;
         this.name = name;
@@ -69,12 +71,22 @@ public abstract class BaseHero implements GameInterface {
         this.priority = priority;
         this.state = State.stand;
     }
+    /**
+     * абстрактный метод, реализация проведена в наследниках
+     * @param arrayFriend
+     * @param arrayEnemy
+     */
     @Override
     public  abstract void step(ArrayList<BaseHero> arrayFriend, ArrayList<BaseHero> arrayEnemy);
     @Override
     public String getInfo() {
-        return this.getClass().getSimpleName() + " (здоровье " + hp + ")"  ;
+        return this.getClass().getSimpleName();
     }
+    /**
+     * находит и возвращает ближайшего врага, принимает список
+     * @param enemyTeam
+     * @return
+     */
     public BaseHero findNearEnemy(ArrayList<BaseHero> enemyTeam) {
         BaseHero nearEnemy = enemyTeam.get(0);
         double distance = position.distance(enemyTeam.get(0).position);
@@ -95,5 +107,19 @@ public abstract class BaseHero implements GameInterface {
             state = State.dead;
         }
     }
+    public int[] getCoord() {
+        return new int[]{position.x,position.y};
+    }
+    @Override
+    public String toString() {
+        return name +
+                " H:" + Math.round(hp) +
+                " D:" + def +
+                " A:" + attack +
+                " Dmg:" + Math.round(Math.abs((damage[0] + damage[1])/2)) +
+                " " + state;
+    }
+
     public abstract void Die();
+
 }

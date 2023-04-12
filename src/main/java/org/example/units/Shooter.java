@@ -4,10 +4,9 @@ import org.example.Position;
 import java.util.ArrayList;
 import java.util.Random;
 public abstract class Shooter extends BaseHero implements GameInterface {
-    protected int accuracy;
-    protected int arrows = 10;
+    protected int accuracy; // точность
+    protected int arrows = 10; // стрелы
     protected int maxArrows;
-
     public int getMaxArrows() {
         return maxArrows;
     }
@@ -50,14 +49,16 @@ public abstract class Shooter extends BaseHero implements GameInterface {
             System.out.println("Найден ближайший противник: " + closestEnemy.getInfo() + " " + closestEnemy.getName());
             //checkPeasant(arrayFriend);
             Random r = new Random();
-            closestEnemy.getDamage(r.nextInt(damage[0], damage[1]+1));
+            closestEnemy.getDamage(r.nextInt(damage[0], damage[1]+1)); // урон противника
             System.out.println(this.getInfo() + this.getName() + " стреляет в " + closestEnemy.getInfo() + " " + closestEnemy.getName());
             arrows--;
         }
         System.out.println("Осталось " + arrows + " стрел");
+        System.out.println("Конец хода shooter");
     }
+
     @Override
     public String getInfo() {
-        return this.getClass().getSimpleName() + " (здоровье " + hp + ")" + "( стрел " + arrows + ")";
+        return this.getClass().getSimpleName();
     }
 }

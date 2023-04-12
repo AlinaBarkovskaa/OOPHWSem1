@@ -1,22 +1,27 @@
-import org.example.*;
+package org.example;
 import org.example.units.BaseHero;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Scanner;
 public class Main  {
+    static ArrayList<BaseHero> teamOwn = new ArrayList<>();
+    static ArrayList<BaseHero> teamEnemy = new ArrayList<>();
+    static ArrayList<BaseHero> teamAll = new ArrayList<>();
     public static void main(String[] args) {
-        ArrayList<BaseHero> teamOwn = new ArrayList<>();
-        ArrayList<BaseHero> teamEnemy = new ArrayList<>();
         System.out.println("Список своих");
-        Additionally.getListOwn(teamOwn);
-        teamOwn.forEach(n -> System.out.println(n.getInfo() + " " + n.getName()));
+        Additionally.getList(teamOwn, 1);//вызов статического метода, обращаемся к классу!
+        teamOwn.forEach(n -> System.out.println(n.getInfo() + " " + n.getName() + " (здоровье " + n.getHp() + ")"));
         System.out.println("Список противников");
-        Additionally.getListEnemy(teamEnemy);
-        teamEnemy.forEach(n -> System.out.println(n.getInfo() + " " + n.getName()));
-        System.out.println("Cписок объединенных отсортированных по приоритету команд");
-        ArrayList<BaseHero> teamAll = new ArrayList<>();
+        Additionally.getList(teamEnemy, 10);
+        teamEnemy.forEach(n -> System.out.println(n.getInfo() + " " + n.getName() + " (здоровье " + n.getHp() + ")"));
+        System.out.println("Cписок объединенных отсортированных по приоритету команд " +
+                "" +
+                "" +
+                "" +
+                "");
         teamAll.addAll(teamOwn);
         teamAll.addAll(teamEnemy);
-
+        // сортировка по приоритету
         teamAll.sort(new Comparator<BaseHero>() {
             @Override
             public int compare(BaseHero o1, BaseHero o2) {
@@ -26,10 +31,19 @@ public class Main  {
                 return o1.getPriority() - o2.getPriority();
             }
         });
-        teamAll.forEach(n -> System.out.println(n.getInfo() + " " + n.getName()));
-        teamOwn.forEach(n -> n.step(teamOwn,teamEnemy));
-        teamEnemy.forEach(n -> n.step(teamEnemy, teamOwn));
-        teamAll.forEach(n -> System.out.println(n.getInfo() + " " + n.getName()));
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            View.view();
+            for (BaseHero hero : teamAll
+            ) {
+                if (teamOwn.contains(hero))
+                    hero.step(teamOwn, teamEnemy);
+                else {
+                    hero.step(teamEnemy, teamOwn);
+                }
+            }
+            scanner.nextLine();
+        }
 
     }
 }
