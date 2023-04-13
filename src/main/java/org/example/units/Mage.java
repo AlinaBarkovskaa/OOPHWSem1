@@ -1,47 +1,35 @@
 package org.example.units;
-
+import org.example.GameInterface;
 import org.example.Position;
-import org.example.units.BaseHero;
-
 import java.util.ArrayList;
-
-public class Mage extends BaseHero {
-    private int potion, maxPotion; // количество зелья
-    private int power; // мощность зелья
-
-    public int getMaxPotion() {
-        return maxPotion;
+import java.util.Random;
+public abstract class Mage extends BaseHero implements GameInterface {
+    protected int manna;
+    public Mage(float hp, String name, Position position, int attack, int[] damage, int def, int priority, int manna) {
+        super(hp, name, position, attack, damage, def, priority);
+        this.manna = manna;
     }
-    public void setMaxPotion(int maxPotion) {
-        this.maxPotion = maxPotion;
-    }
-    public int getPotion() {
-        return potion;
-    }
-    public void setPotion(int potion) {
-        this.potion = potion;
-    }
-    public int getPower() {
-        return power;
-    }
-    public void setPower(int power) {
-        this.power = power;
-    }
-
-    public Mage(String name, Position position) {
-        super(90, name, position, 0, new int[]{1,2}, 100,5);
-        potion = 10;
-        maxPotion = potion;
-        power = 3;
-    }
-
-    @Override
     public void step(ArrayList<BaseHero> arrayFriend, ArrayList<BaseHero> arrayEnemy) {
+        BaseHero nearOwn = findNearPerson(arrayFriend);
+        if (nearOwn.getHp() > 0 & nearOwn.getHp() < nearOwn.getMaxhp()) {
+            Random r = new Random();
+            nearOwn.takeHealth(r.nextInt(damage[0], damage[1] + 1));
+            manna -= 1;
+        }
 
     }
-
     @Override
-    public void Die() {
-
+    public String getInfo() {
+        return this.getClass().getSimpleName();
+    }
+    @Override
+    public String toString() {
+        return name +
+                " Hp:" + Math.round(hp) +
+                " Def:" + def +
+                " Att:" + attack +
+                " Dmg:" + Math.round(Math.abs((damage[0] + damage[1])/2)) +
+                " Man" + manna +
+                " " + state;
     }
 }

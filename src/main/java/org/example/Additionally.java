@@ -12,7 +12,7 @@ public class Additionally {
                 case 2 -> arrayList.add(new Crossbowman(getRandomName(), new Position(i+1, y1)));
                 case 3 -> arrayList.add(new Peasant(getRandomName(), new Position(i+1, y1)));
                 case 4 -> arrayList.add(new Monk(getRandomName(), new Position(i+1, y1)));
-                case 5 -> arrayList.add(new Mage(getRandomName(), new Position(i+1, y1)));
+//                case 5 -> arrayList.add(new Witch(getRandomName(), new Position(i+1, y1)));
                 default -> arrayList.add(new Thief(getRandomName(), new Position(i+1, y1)));
             }
         }
